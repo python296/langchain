@@ -71,7 +71,7 @@ class PostgresChatMessageHistory(BaseChatMessageHistory):
             f"SELECT message FROM {self.table_name} WHERE session_id = %s ORDER BY id;"
         )
         self.cursor.execute(query, (self.session_id,))
-        items = [record["message"] for record in self.cursor.fetchall()]
+        items = [json.loads(record["message"]) for record in self.cursor.fetchall()]
         messages = messages_from_dict(items)
         return messages
 
